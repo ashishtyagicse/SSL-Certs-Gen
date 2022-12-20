@@ -5,8 +5,8 @@
 # This script will server as master script for running other certificate deployment scripts 
 
 # Text file with all host names 
-ALL_HOSTS_LIST=/tmp/cloudera-certs-orig/ALL_HOSTS
-SCRIPTS_FOLDER=/tmp/cloudera-certs-orig
+ALL_HOSTS_LIST=/tmp/certs-orig/ALL_HOSTS
+SCRIPTS_FOLDER=/tmp/certs-orig
 
 
 ERRORS=0
