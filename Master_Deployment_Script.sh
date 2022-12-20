@@ -64,7 +64,7 @@ while [[ $OPT != 0 ]] ; do
                         printf "\n\n\n\n\n"
                         echo "1) Deploy certificate, key and scripts for creating SSL/TLS certificates"
                         echo "2) Check the pem formatted certificate and key files on all hosts"
-                        echo "3) Deploy certificates oh hosts in cloudera security folder structure"
+                        echo "3) Deploy certificates oh hosts in security folder"
                         printf "Make a selection for script execution (4 to repeat and 0 to exit): "
                         read OPT
                 ;;
