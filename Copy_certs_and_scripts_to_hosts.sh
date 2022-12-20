@@ -2,15 +2,15 @@
 # Uncomment following line for debigging
 # trap "set +x; sleep 1; set -x" DEBUG
 
-# This script will deploy certificate, key and scripts for creating SSL/TLS certificates folder from cloudera manager node to all other nodes in the cluster
-# By default folder /tmp/cloudera-certs-orig on Cloudera manager node contains certificates for all the hosts and corresponding scripts
+# This script will deploy certificate, key and scripts for creating SSL/TLS certificates folder.
+# By default folder /tmp/certs-orig on master node contains certificates for all the hosts and corresponding scripts
 
 
 echo "Starting delpoyment of certs and scripts folder to cluster hosts"
 
-SCRIPTS_FOLDER=/tmp/cloudera-certs
-SCRIPTS_SOURCE_FOLDER=/tmp/cloudera-certs-orig
-ALL_HOSTS_LIST=/tmp/cloudera-certs-orig/ALL_HOSTS
+SCRIPTS_FOLDER=/tmp/certs
+SCRIPTS_SOURCE_FOLDER=/tmp/certs-orig
+ALL_HOSTS_LIST=/tmp/certs-orig/ALL_HOSTS
 
 # Terminal size and color settings
 TRMCOL=$(tput cols)
