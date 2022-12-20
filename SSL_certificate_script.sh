@@ -2,14 +2,13 @@
 # Uncomment following line for debigging
 # trap "set +x; sleep 2; set -x" DEBUG
 
-# This script will use pem and key files in the script folder and create a security folder as per cloudera recommendation
+# This script will use pem and key files in the script folder and create a security folder
 # Script will also edit the config.ini file to use TLS Level 3
 
 
-SCRIPTS_FOLDER=/tmp/cloudera-certs
-SECURITY_FOLDER=/opt/cloudera/security/pki
-AGENT_KEY_FILE_PATH=/etc/cloudera-scm-agent
-AGENT_CONFIG_FILE=/etc/cloudera-scm-agent/config.ini
+SCRIPTS_FOLDER=/tmp/certs
+SECURITY_FOLDER=/etc/security/pki
+AGENT_KEY_FILE_PATH=/etc/security/
 KEY_PASSWORD=xxxxxxxxxxxxx
 KEYSTORE_PASSWORD=xxxxxxxxxxxxx
 JAVA_HOME=/usr/java/jdk1.8.0_251-amd64
@@ -19,6 +18,9 @@ CLIENT_KEY_FILE=$SECURITY_FOLDER/agent.key
 CLIENT_KEYPW_FILE=$AGENT_KEY_FILE_PATH/agentkey.pw
 CLIENT_CERT_FILE=$SECURITY_FOLDER/agent.pem
 
+# Cloudera specific settings
+# AGENT_CONFIG_FILE=/etc/cloudera-scm-agent/config.ini
+
 # Terminal colors 
 RC='\033[0;31m'
 GC='\033[0;32m'
@@ -26,7 +28,7 @@ YC='\033[1;33m'
 NC='\033[0m'
 
 
-printf "\nStarting cloudera certificate deployment script on host ${YC}$(hostname -f)...${NC}\n"
+printf "\nStarting certificate deployment script on host ${YC}$(hostname -f)...${NC}\n"
 
 echo "1) Taking backup of old security folder if it exists"
 if [[ -d "$SECURITY_FOLDER" ]] ; then
@@ -89,15 +91,15 @@ $SECURITY_FOLDER/rootca.pem \
 $SECURITY_FOLDER/intca-1.pem >> \
 $SECURITY_FOLDER/truststore.pem
 
-echo "9) Creating agent key password file"
-if [[ -e  "$AGENT_KEY_FILE_PATH/agentkey.pw" ]] ; then
-    mv $AGENT_KEY_FILE_PATH/agentkey.pw $AGENT_KEY_FILE_PATH/agentkey-backup-`date +%F`.pw
-    echo $KEY_PASSWORD >> $AGENT_KEY_FILE_PATH/agentkey.pw
+echo "9) Creating key password file"
+if [[ -e  "$AGENT_KEY_FILE_PATH/key.pw" ]] ; then
+    mv $AGENT_KEY_FILE_PATH/key.pw $AGENT_KEY_FILE_PATH/key-backup-`date +%F`.pw
+    echo $KEY_PASSWORD >> $AGENT_KEY_FILE_PATH/key.pw
 else
-    echo $KEY_PASSWORD >> $AGENT_KEY_FILE_PATH/agentkey.pw
+    echo $KEY_PASSWORD >> $AGENT_KEY_FILE_PATH/key.pw
 fi
-chown root:root $AGENT_KEY_FILE_PATH/agentkey.pw
-chmod 777 $AGENT_KEY_FILE_PATH/agentkey.pw
+chown root:root $AGENT_KEY_FILE_PATH/key.pw
+chmod 777 $AGENT_KEY_FILE_PATH/key.pw
 
 echo "10) Creating symbolic links for all the certs and files"
 ln -s $SECURITY_FOLDER/$(hostname -f).key $SECURITY_FOLDER/agent.key
@@ -132,11 +134,12 @@ echo "14) Change permission for security folder"
 chmod -R 755 $SECURITY_FOLDER
 chmod -R 755 /opt/cloudera/security/
 
-echo "15) Changing agent config.ini file"
-cp $AGENT_CONFIG_FILE $AGENT_CONFIG_FILE-backup-`date +%F`
-sed -i "s@.*use_tls=.*@use_tls=$USE_TLS@" $AGENT_CONFIG_FILE
-sed -i "s@.*verify_cert_file=.*@verify_cert_file=$VERIFY_CERT_FILE@" $AGENT_CONFIG_FILE
-sed -i "s@.*client_key_file=.*@client_key_file=$CLIENT_KEY_FILE@" $AGENT_CONFIG_FILE
-sed -i "s@.*client_keypw_file=.*@client_keypw_file=$CLIENT_KEYPW_FILE@" $AGENT_CONFIG_FILE
-sed -i "s@.*client_cert_file=.*@client_cert_file=$CLIENT_CERT_FILE@" $AGENT_CONFIG_FILE
-sed -i "s@.*verify_cert_dir=.*@# verify_cert_dir=@" $AGENT_CONFIG_FILE
+# Cloudera specific congigurations 
+#echo "15) Changing agent config.ini file"
+#cp $AGENT_CONFIG_FILE $AGENT_CONFIG_FILE-backup-`date +%F`
+#sed -i "s@.*use_tls=.*@use_tls=$USE_TLS@" $AGENT_CONFIG_FILE
+#sed -i "s@.*verify_cert_file=.*@verify_cert_file=$VERIFY_CERT_FILE@" $AGENT_CONFIG_FILE
+#sed -i "s@.*client_key_file=.*@client_key_file=$CLIENT_KEY_FILE@" $AGENT_CONFIG_FILE
+#sed -i "s@.*client_keypw_file=.*@client_keypw_file=$CLIENT_KEYPW_FILE@" $AGENT_CONFIG_FILE
+#sed -i "s@.*client_cert_file=.*@client_cert_file=$CLIENT_CERT_FILE@" $AGENT_CONFIG_FILE
+#sed -i "s@.*verify_cert_dir=.*@# verify_cert_dir=@" $AGENT_CONFIG_FILE
