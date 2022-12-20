@@ -5,7 +5,7 @@
 # This script will check the pem formatted certificate and key files on the host
 
 
-SCRIPTS_FOLDER=/tmp/cloudera-certs
+SCRIPTS_FOLDER=/tmp/certs
 KEY_PASSWORD=xxxxxxxxxxxxx
 
 
@@ -23,12 +23,12 @@ PASS=PASS
 FAIL=FAIL
 
 SignatureAlgorithm=sha256WithRSAEncryption
-Issuer="Cloudera, CN=Cloudera General Purpose Issuing CA"
+Issuer="test, CN=Test General Purpose Issuing CA"
 PublicKeyAlgorithm=rsaEncryption
 PublicKeyLength=2048
-IMPALA_LB_FQDN="impalalb.cloudera.com"
+IMPALA_LB_FQDN="Test.com"
 IMPALA_LB="impalalb"
-HIVE_LB_FQDN="hivelb.cloudera.com"
+HIVE_LB_FQDN="Test.com"
 HIVE_LB="hivelb"
 
 
